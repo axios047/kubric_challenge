@@ -13,7 +13,8 @@
           <div v-for="l in labels" :key="l.index" class="label"><p>{{l}}</p></div>
         </div>
         <div class="plan" v-for="plan in plans" :key="plan.index">
-          <div class="plan-head">
+          <div v-bind:class="{recommend:plan.isRecommend}" class="plan-head">
+            <div v-if="plan.isRecommend" class="rec-tag">RECOMMENDED</div>
             <div class="plan-meta">
               <h3 class="plan-name">{{plan.planName}}</h3>
               <h4 class="users">{{plan.users}}</h4>
@@ -24,8 +25,12 @@
               <div class="billing tip">{{plan.prices.billing}}</div>
             </div>
             <div class="CTA-button">{{plan.btnText}}</div>
+            <div class="feat-button" @click="showfeat = !showfeat">
+              <p v-if="!showfeat">Show features</p>
+              <p v-if="showfeat">Hide features</p>
+            </div>
           </div>
-          <div class="features">
+          <div v-bind:class="{active:showfeat}" class="features">
             <div v-for="f in plan.features" :key="f.index" class="feat basic">
               <p class="fname">{{f.name}}</p>
               <div v-if="f.tip" class="ftip tip">{{f.tip}}</div>
@@ -101,6 +106,7 @@ export default {
           ]
         },
         {
+          isRecommend: true,
           planName:"Pro",
           users:"5-User Access",
           tip:"Perfect for marketers & freelancers",
@@ -163,7 +169,8 @@ export default {
       ],
       proUnlockFeatures:[
         "Integrations","Collaboration","Videos & GIFs","Quality Checks","Add on bots","Custom Templates"
-      ]
+      ],
+      showfeat:false
     }
   }
   
@@ -183,6 +190,43 @@ $text-light: #3F3D4C;
 
 
 // pricing table styles
+.feat-button{
+  display: none;
+}
+.recommend{
+  border: 2px solid $purple !important;
+  position: relative;
+  .rec-tag{
+    background: $purple;
+    color: white;
+    font-weight: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0;
+    transform: translateY(-100%);
+  }
+  .plan-name{
+    font-size: 2.441rem;
+    // margin: 0.25rem 0;
+    display: inline;
+    box-sizing: border-box;
+    ::after {
+        content:"";
+        position:absolute;
+        width:100%;
+        bottom:1px;
+        z-index:-1;
+        background: black;
+        // box-shadow: 0px 0px 8px 2px #000000;
+    }
+  }
+  .CTA-button{
+    background: $purple;
+    color: white;
+  }
+}
 .arrow{
   background: white;
   width: 3rem;
@@ -252,6 +296,7 @@ $text-light: #3F3D4C;
   height: 22rem;
   box-sizing: border-box;
   background: white;
+  border-top: 10px solid $yellow
 }
 .plan-prices{
   margin: 2rem 0;
@@ -284,6 +329,39 @@ $text-light: #3F3D4C;
 .enterprise:nth-child(even){
   background: $yellow-light;
 }
+.profeatures{
+  position: relative;
+  .tag{
+    color: #fff;
+    background: $purple;
+    font-weight: bold;
+    width: fit-content;
+    position: absolute;
+    padding: .8rem;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    top: 58px;
+    left: -45px;
+  }
+}
+.enterpriseFeatures{
+  position: relative;
+  .tag{
+    color: #fff;
+    background: $yellow;
+    font-weight: bold;
+    width: fit-content;
+    position: absolute;
+    padding: .8rem;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    top: 120px;
+    left: -45px;
+  }
+}
+.plan:nth-child(4) .profeatures .tag{
+  display: none;
+}
 .addOns-wrap{
   border: 1px solid $base-color;
   position: relative;
@@ -312,7 +390,7 @@ $text-light: #3F3D4C;
   text-align: right;
   font-weight: bold;
 }
-.label:nth-child(even){
+.label:nth-child(odd){
   background: $base-light;
 }
 .tip{
@@ -339,4 +417,37 @@ $text-light: #3F3D4C;
   color: $yellow;
 }
 
+// responsive
+@media (max-width: 768px){
+  .feat-button{
+    display: block;
+    padding: 0.5rem 0;
+    height: 5rem;
+    margin: 1rem 0;
+  }
+  .pricing-table{
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    margin-top: -5rem;
+    grid-gap: 1rem;
+    margin: 0 2rem;
+  }
+  .plan{
+    .plan-head{
+      box-sizing: content-box;
+    }
+    .features{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
+  }
+  .plan:nth-child(3){
+    grid-row: 1/2;
+  }
+  .labels,.proUnlock,.enterpriseUnlock{
+    display: none;
+  }
+}
 </style>
