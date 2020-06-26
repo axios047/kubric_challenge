@@ -82,6 +82,20 @@
         </div>
       </div>
     </section>
+    <section class="faq-wrap">
+      <div class="faq">
+        <div class="faq-head">
+          <h1>Frequently Asked Questions</h1>
+          <p>Still haven't found what you're looking for?<br><a href="#">Send us a messsage</a></p>
+        </div>
+        <div class="ques-wrap">
+          <div v-for="(f,index) in faqs" :key="f.id" class="faqs">
+            <div class="ques" @click="activeFaq[index]=!activeFaq[index]" v-bind:class="{activeQ:activeFaq[index]}"><p>{{f.question}}</p></div>
+            <div v-if="activeFaq[index]" class="ans"><p>{{f.ans}}</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -175,11 +189,35 @@ export default {
       proUnlockFeatures:[
         "Integrations","Collaboration","Videos & GIFs","Quality Checks","Add on bots","Custom Templates"
       ],
-       activeFeature: {
+      activeFeature: {
          0:false,
          1:false,
          2:false
-       }, 
+       },
+      activeFaq:{
+        0:false,
+        1:false,
+        2:false,
+        3:false
+      },
+      faqs:[
+        {
+          question:"Which features are included in the free plan?",
+          ans:"All starter pack feature are included in the free plan"
+        },
+        {
+          question:"What's the catch?",
+          ans:"A big fish!"
+        },
+        {
+          question:"What happens when I run out of credits?",
+          ans:"When your included credits expire you will not be able to use the advanced automation features in Kubric until you buy more credits or upgrade to a paid plan"
+        },
+        {
+          question:"Is there a limit to the amount of credits I can buy in the free plan?",
+          ans:"Nope. Give us all your money!"
+        }
+      ]
     }
   },
 }
@@ -196,6 +234,45 @@ $purple-light: #F0F1FC;
 $text-color: #1F1F21;
 $text-light: #3F3D4C;
 
+//faqs
+.faq-wrap{
+  background: $base-color;
+  color: white;
+}
+.faq{
+  max-width: 90rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  justify-content: space-between;
+}
+.ques-wrap{
+  width: 50%;
+}
+.faq-head{
+  width: 40%;
+  p{
+    font-style: italic;
+    opacity: 0.7;
+  }
+}
+.faqs{
+  border-bottom: 1px solid rgba(191, 191, 196, 0.2);
+  .ques{
+    margin: 1rem 0;
+    cursor: pointer;
+  }
+  .ans{
+    margin: 2rem 0;
+  }
+  .activeQ{
+    color: $yellow;
+  }
+}
+a{
+  color: inherit;
+}
 
 // pricing table styles
 .feat-button{
@@ -486,6 +563,13 @@ $text-light: #3F3D4C;
   }
   .labels,.proUnlock,.enterpriseUnlock{
     display: none;
+  }
+  .ques-wrap{
+    width: 100%;
+    margin-top: 3rem;
+  }
+  .faq-head{
+    width: 100%;
   }
 }
 </style>
