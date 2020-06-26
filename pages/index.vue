@@ -297,15 +297,15 @@ a{
     // margin: 0.25rem 0;
     display: inline;
     box-sizing: border-box;
-    ::after {
-        content:"";
-        position:absolute;
-        width:100%;
-        bottom:1px;
-        z-index:-1;
-        background: black;
-        // box-shadow: 0px 0px 8px 2px #000000;
-    }
+    
+  }
+  .recommend>.plan-name::after {
+      content:'lol';
+      position: absolute;
+      width:100%;
+      bottom:1px;
+      z-index:-1;
+      background: $yellow;
   }
   .CTA-button{
     background: $purple;
@@ -520,7 +520,7 @@ a{
 // pricing header styles
 .price-head{
   background: $base-color;
-  height: 60vh;
+  height: 40rem;
 }
 .head-content{
   margin: 0 auto;
@@ -534,6 +534,9 @@ a{
 
 // responsive
 @media (max-width: 768px){
+  .price-head{
+    height: 30rem;
+  }
   .feat-button{
     display: block;
     padding: 0.5rem 0;
