@@ -238,6 +238,7 @@ $text-light: #3F3D4C;
 .faq-wrap{
   background: $base-color;
   color: white;
+  margin-top: 3rem;
 }
 .faq{
   max-width: 90rem;
