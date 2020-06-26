@@ -12,7 +12,7 @@
           <div class="spacer"></div>
           <div v-for="l in labels" :key="l.index" class="label"><p>{{l}}</p></div>
         </div>
-        <div class="plan" v-for="plan in plans" :key="plan.index">
+        <div class="plan" v-for="(plan,index) in plans" :key="plan.index">
           <div v-bind:class="{recommend:plan.isRecommend}" class="plan-head">
             <div v-if="plan.isRecommend" class="rec-tag">RECOMMENDED</div>
             <div class="plan-meta">
@@ -21,39 +21,42 @@
               <div class="tip">{{plan.tip}}</div>
             </div>
             <div class="plan-prices">
-              <h2 class="cost"><strike v-if="plan.prices.offerCost">{{plan.prices.offerCost}}</strike>{{plan.prices.cost}}</h2>
+              <h2 class="cost"><div class="strike" v-if="plan.prices.offerCost">{{plan.prices.offerCost}}</div>{{plan.prices.cost}}</h2>
               <div class="billing tip">{{plan.prices.billing}}</div>
             </div>
             <div class="CTA-button">{{plan.btnText}}</div>
-            <div class="feat-button" @click="showfeat = !showfeat">
-              <p v-if="!showfeat">Show features</p>
-              <p v-if="showfeat">Hide features</p>
+            <div class="feat-button" @click="activeFeature[index]=!activeFeature[index]">
+              <p v-if="!activeFeature[index]">Show features</p>
+              <p v-if="activeFeature[index]">Hide features</p>
             </div>
           </div>
-          <div v-bind:class="{active:showfeat}" class="features">
+          <div v-bind:class="{active:activeFeature[index]}" class="features">
             <div v-for="f in plan.features" :key="f.index" class="feat basic">
-              <p class="fname">{{f.name}}</p>
-              <div v-if="f.tip" class="ftip tip">{{f.tip}}</div>
+              <p style="white-space: pre;" class="fname">{{f.name}}</p>
+              <div style="white-space: pre;" v-if="f.tip" class="ftip tip">{{f.tip}}</div>
             </div>
             <div v-if="plan.proFeatures" class="profeatures">
               <div class="tag">PRO</div>
               <div v-for="f in plan.proFeatures" :key="f.index" class="feat pro">
-                <p class="fname">{{f.name}}</p>
-                <div v-if="f.tip" class="ftip tip">{{f.tip}}</div>
+                <p style="white-space: pre;" class="fname">{{f.name}}</p>
+                <div style="white-space: pre;" v-if="f.tip" class="ftip tip">{{f.tip}}</div>
               </div>
             </div>
             <div v-if="plan.addOns" class="addOns-wrap">
               <div class="tag">ADD-ONS+</div>
               <div v-for="f in plan.addOns" :key="f.index" class="feat addOn">
-                <p class="fname">{{f.name}}</p>
-                <div v-if="f.tip" class="ftip tip">{{f.tip}}</div>
+                <p style="white-space: pre;" class="fname">{{f.name}}</p>
+                <div style="white-space: pre;" v-if="f.tip" class="ftip tip">{{f.tip}}</div>
+                <div v-if="f.iterables" class="iters-wrap">
+                  <p style="white-space: pre;" class="iters" v-for="i in f.iterables" :key="i.id"><b>{{i}}</b></p>
+                </div>
               </div>
             </div>
             <div v-if="plan.enterpriseFeatures" class="enterpriseFeatures">
               <div class="tag">ENTERPRISE</div>
               <div v-for="f in plan.enterpriseFeatures" :key="f.index" class="feat enterprise">
-                <p class="fname">{{f.name}}</p>
-                <div v-if="f.tip" class="ftip tip">{{f.tip}}</div>
+                <p style="white-space: pre;" class="fname">{{f.name}}</p>
+                <div style="white-space: pre;" v-if="f.tip" class="ftip tip">{{f.tip}}</div>
               </div>
             </div>
           </div>
@@ -99,7 +102,7 @@ export default {
           btnText:"Try Now!",
           features:[
             { name: "Pre-created designs"},
-            { name: "Auto Contrast Color Auto Text Wrap"},
+            { name: "Auto Contrast Color\nAuto Text Wrap"},
             { name: "Upto 10 exports", tip: "per month FREE"},
             { name: "Last 3 versions"},
             { name: "Universal Search"}
@@ -117,19 +120,21 @@ export default {
           btnText:"Buy Now",
           features:[
             { name: "1 custom banner design import"},
-            { name: "Auto Contrast Color Auto Text Wrap Auto position"},
+            { name: "Auto Contrast Color\nAuto Text Wrap\nAuto position"},
             { name: "200 exports included", tip: "Top up as you need them"},
             { name: "Upto Last 10 versions"},
             { name: "Integrated Smart Search", tip:"(search across your asset sources)" }
           ],
           proFeatures:[
-            { name:"Out of the box integrations",tip:"(Shuttershock,Cloudinary,Google Drive, DropBox)"},
+            { name:"Out of the box integrations",tip:"(Shuttershock,Cloudinary,\nGoogle Drive, DropBox)"},
             { name:"5 users included",tip:"add more users at $12/mo"}
           ],
           addOns:[
             { name:"+ Add on Video/GIF Support"},
             { name:"+ Add on Auto Quality Check"},
-            { name:"+ Add on Bots"},
+            { name:"+ Add on Bots",iterables:[
+              "Auto Gradient","Auto remove bg","Auto resize"
+            ]},
             { name:"+ Add on Custom Templates"},
           ]
         },
@@ -144,23 +149,23 @@ export default {
           btnText:"Contact Us",
           features:[
             { name: "Unlimited design imports"},
-            { name: "Unlimited Auto edit bots"},
-            { name: "Customized tiers for large scale needs"},
+            { name: "Unlimited\nAuto edit bots"},
+            { name: "Customized tiers for\nlarge scale needs"},
             { name: "Upto Last 10 versions"},
-            { name: "Customized Asset Taxonomy Builder" }
+            { name: "Customized Asset\nTaxonomy Builder" }
           ],
           proFeatures:[
-            { name:"Everything in Pro + Build custom integrations"},
+            { name:"Everything in Pro\n+ Build custom integrations"},
             { name:"20 users included",tip:"add more with custom plans"},
             { name: "+Video/GIF support"},
             { name: "Automated Quality checks"},
             { name: "Custom Auto edit bot services"},
-            { name: "Content Production API for Live Production", tip:"(with high performance production cluster)"}
+            { name: "Content Production\nAPI for Live Production", tip:"(with high performance production cluster)"}
           ],
           enterpriseFeatures:[
-            {name:"Developers SDK",tip:"Build your own content apps on top of a secure design infrastructure"},
-            {name:"Design Insights",tip:"Get detailed creative insights and audits on your assets and designs"},
-            {name:"The best enterprise SLA supprt and Security"}
+            {name:"Developers SDK",tip:"Build your own content apps on top of a\nsecure design infrastructure"},
+            {name:"Design Insights",tip:"Get detailed creative insights and audits on\nyour assets and designs"},
+            {name:"The best enterprise SLA,\nsupprt and Security"}
           ]
         }
       ],
@@ -170,10 +175,13 @@ export default {
       proUnlockFeatures:[
         "Integrations","Collaboration","Videos & GIFs","Quality Checks","Add on bots","Custom Templates"
       ],
-      showfeat:false
+       activeFeature: {
+         0:false,
+         1:false,
+         2:false
+       }, 
     }
-  }
-  
+  },
 }
 </script>
 
@@ -276,7 +284,7 @@ $text-light: #3F3D4C;
   }
 }
 .pricing-wrap{
-  color: $text-color;
+  color: $text-light;
 }
 .pricing-table{
   margin: 0 auto;
@@ -301,6 +309,23 @@ $text-light: #3F3D4C;
 .plan-prices{
   margin: 2rem 0;
 }
+.plan-prices .cost{
+  .strike{
+    position: relative;
+    display: inline;
+    margin-right: 0.25rem ;
+  }
+}
+.strike::after{
+  content: '';
+  height: 5px;
+  width: 100%;
+  background: $purple;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: rotate(-15deg);
+}
 .CTA-button{
   border: 2px solid $purple;
   border-radius: 4px;
@@ -316,6 +341,16 @@ $text-light: #3F3D4C;
   padding: 1.5rem 2rem;
   border: 1px solid rgba(46, 45, 45, 0.13);
   height: 3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.basic:nth-child(2), .label:nth-child(3){
+  height: 5rem;
+}
+.addOn:nth-child(4), .pro:nth-child(6){
+  height: 7rem;
 }
 .basic:nth-child(even){
   background: $base-light;
@@ -347,7 +382,7 @@ $text-light: #3F3D4C;
 .enterpriseFeatures{
   position: relative;
   .tag{
-    color: #fff;
+    color: $text-color;
     background: $yellow;
     font-weight: bold;
     width: fit-content;
@@ -389,6 +424,9 @@ $text-light: #3F3D4C;
   height: 3em;
   text-align: right;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .label:nth-child(odd){
   background: $base-light;
